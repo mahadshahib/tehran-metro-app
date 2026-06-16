@@ -70,6 +70,33 @@ enum Loc {
                                               fa: "برای یافتن ایستگاه‌های نزدیک، دسترسی موقعیت را فعال کنید.")
     static let useMyLocation = LocalizedText(en: "Use my location", fa: "استفاده از موقعیت من")
 
+    // Live location / nearest-on-map (offline-first)
+    static let myLocation = LocalizedText(en: "My location", fa: "موقعیت من")
+    static let exploreMap = LocalizedText(en: "Explore map", fa: "کاوش نقشه")
+    static let nearestStation = LocalizedText(en: "Nearest station", fa: "نزدیک‌ترین ایستگاه")
+    static let live = LocalizedText(en: "Live", fa: "زنده")
+    static let offline = LocalizedText(en: "Offline", fa: "آفلاین")
+    static let online = LocalizedText(en: "Online", fa: "آنلاین")
+    static let recenter = LocalizedText(en: "Recenter", fa: "بازگشت به مرکز")
+    static let planFromHere = LocalizedText(en: "Plan journey from here", fa: "مسیریابی از اینجا")
+    static let panToExplore = LocalizedText(
+        en: "Pan the map — the crosshair finds the nearest station to any point, even offline.",
+        fa: "نقشه را جابه‌جا کنید — نشانگر، نزدیک‌ترین ایستگاه به هر نقطه را حتی به‌صورت آفلاین پیدا می‌کند."
+    )
+    static let offlineMapNote = LocalizedText(
+        en: "No connection: map tiles may not load, but finding stations works fully offline.",
+        fa: "بدون اتصال: کاشی‌های نقشه ممکن است بارگذاری نشوند، اما یافتن ایستگاه‌ها کاملاً آفلاین کار می‌کند."
+    )
+    static let locationDenied = LocalizedText(
+        en: "Location access is off. Use Explore map to find stations without GPS.",
+        fa: "دسترسی موقعیت خاموش است. برای یافتن ایستگاه بدون GPS از کاوش نقشه استفاده کنید."
+    )
+
+    static func walkMinutes(_ value: Int, language: AppLanguage) -> String {
+        let n = Numerals.string(value, language: language)
+        return language == .farsi ? "\(n) دقیقه پیاده" : "\(value) min walk"
+    }
+
     // Favorites / recents
     static let favorites = LocalizedText(en: "Favorites", fa: "علاقه‌مندی‌ها")
     static let addFavorite = LocalizedText(en: "Add to favorites", fa: "افزودن به علاقه‌مندی‌ها")

@@ -37,6 +37,13 @@ enum Numerals {
         return formatter.string(from: Measurement(value: meters, unit: UnitLength.meters))
     }
 
+    /// Approximate walking time for a straight-line distance, in whole minutes.
+    /// Assumes ~80 m/min (≈4.8 km/h); always at least 1 minute. Clearly an
+    /// estimate — actual walking routes are longer than the crow-flies distance.
+    static func walkingMinutes(meters: Double) -> Int {
+        max(1, Int((meters / 80).rounded(.up)))
+    }
+
     /// Format a duration in minutes → "12 min" / "۱۲ دقیقه".
     static func minutes(_ value: Int, language: AppLanguage) -> String {
         let number = string(value, language: language)

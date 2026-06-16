@@ -14,8 +14,11 @@ bilingual (Farsi / English) with first-class RTL support.
 - **Journey planner** — line-aware Dijkstra; *fewest transfers* vs *fewest stops*;
   "board Line X toward terminal Y, ride N stops, transfer at Z" directions with an
   approximate time.
-- **Nearby** — MapKit map + nearest stations + external walking directions
-  (Neshan → Apple → Google).
+- **Nearby (offline-first)** — live GPS tracking with the nearest station updating
+  as you move, plus an **Explore map** mode whose crosshair finds the nearest
+  station to any point with no GPS/connection at all. Walking-time estimates,
+  an online/offline indicator (only map *tiles* need a connection), and one-tap
+  external walking directions (Neshan → Apple → Google).
 - **Personalization** — favorites, saved routes, recents (SwiftData); language,
   theme, and name-display settings; route sharing.
 
