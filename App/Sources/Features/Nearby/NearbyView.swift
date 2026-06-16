@@ -204,7 +204,7 @@ struct NearbyView: View {
             systemImage: reachability.isOnline ? "wifi" : "wifi.slash"
         )
         .font(.caption2)
-        .foregroundStyle(reachability.isOnline ? .secondary : .orange)
+        .foregroundStyle(reachability.isOnline ? Color.secondary : Color.orange)
         .labelStyle(.titleAndIcon)
     }
 
