@@ -7,8 +7,8 @@ struct JourneyPlannerView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(\.modelContext) private var context
 
-    @State private var viewModel: JourneyViewModel?
-    @State private var picking: Endpoint?
+    @State private var viewModel: JourneyViewModel? = nil
+    @State private var picking: Endpoint? = nil
 
     var presetOrigin: StationID? = nil
     var presetDestination: StationID? = nil

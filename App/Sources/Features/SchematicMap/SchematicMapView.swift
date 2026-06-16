@@ -12,7 +12,7 @@ struct SchematicMapView: View {
     @State private var lastScale: CGFloat = 1
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
-    @State private var selected: StationID?
+    @State private var selected: StationID? = nil
 
     private let inset: CGFloat = 32
 

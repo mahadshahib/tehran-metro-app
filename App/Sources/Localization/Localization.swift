@@ -23,11 +23,9 @@ enum Numerals {
     }
 
     /// Format an integer using the language's native digits (۰۱۲ vs 012).
+    /// Delegates to the domain layer so the logic is unit-tested there.
     static func string(_ value: Int, language: AppLanguage) -> String {
-        let formatter = NumberFormatter()
-        formatter.locale = locale(for: language)
-        formatter.numberStyle = .decimal
-        return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
+        NumberLocalization.string(value, language: language)
     }
 
     /// Format a distance in meters → "450 m" / "۱٫۲ km" with native digits.

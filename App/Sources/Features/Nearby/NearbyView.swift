@@ -14,7 +14,7 @@ struct NearbyView: View {
             span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
         )
     )
-    @State private var selected: StationID?
+    @State private var selected: StationID? = nil
 
     private var lang: AppLanguage { settings.language }
 
@@ -46,7 +46,7 @@ struct NearbyView: View {
                        coordinate: CLLocationCoordinate2D(latitude: station.coordinate.latitude,
                                                           longitude: station.coordinate.longitude))
                     .tint(Color(hex: station.lines.first.flatMap { model.line($0)?.colorHex } ?? "#888888"))
-                    .tag(Optional(station.id))
+                    .tag(station.id)
             }
         }
         .mapControls { MapUserLocationButton(); MapCompass() }

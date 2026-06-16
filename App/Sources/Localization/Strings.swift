@@ -1,4 +1,5 @@
 import Foundation
+import MetroDomain
 
 /// All user-facing copy, in both languages. Grouped by feature.
 enum Loc {
