@@ -5,6 +5,7 @@ import SwiftData
 struct TehranMetroApp: App {
     @State private var model = AppModel()
     @State private var settings = AppSettings()
+    @State private var location = LocationManager()
 
     init() {
         FontRegistrar.registerBundledFonts()
@@ -15,6 +16,7 @@ struct TehranMetroApp: App {
             RootView()
                 .environment(model)
                 .environment(settings)
+                .environment(location)
                 .environment(\.layoutDirection, settings.language.layoutDirection)
                 .environment(\.locale, settings.language.swiftUILocale)
                 .preferredColorScheme(settings.colorScheme)

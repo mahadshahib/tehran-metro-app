@@ -7,6 +7,7 @@ import MetroDomain
 struct StationPickerView: View {
     @Environment(AppModel.self) private var model
     @Environment(AppSettings.self) private var settings
+    @Environment(LocationManager.self) private var location
     @Environment(\.dismiss) private var dismiss
 
     @Query(sort: \FavoriteStation.addedAt, order: .reverse) private var favorites: [FavoriteStation]
@@ -21,6 +22,7 @@ struct StationPickerView: View {
         NavigationStack {
             List {
                 if searchText.isEmpty {
+                    nearestSection
                     quickSection(Loc.favorites, ids: favorites.map(\.stationID))
                     quickSection(Loc.recents, ids: recents.map(\.stationID))
                     Section(Loc.stations.string(for: settings.language)) {
@@ -40,6 +42,24 @@ struct StationPickerView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(Loc.cancel.string(for: settings.language)) { dismiss() }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var nearestSection: some View {
+        if let coordinate = location.lastCoordinate,
+           let nearest = model.network.nearestStations(to: coordinate, limit: 1).first {
+            Section(Loc.nearestToMe.string(for: settings.language)) {
+                row(nearest)
+            }
+        } else if !location.isDenied {
+            Section {
+                Button {
+                    location.startTracking()
+                } label: {
+                    Label(Loc.useMyLocation.string(for: settings.language), systemImage: "location.fill")
                 }
             }
         }

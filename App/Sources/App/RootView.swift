@@ -13,14 +13,15 @@ struct RootView: View {
             }
         } else {
             TabView {
-                LinesView()
-                    .tabItem { Label(Loc.tabLines.string(for: settings.language), systemImage: "tram.fill") }
-                SchematicMapView()
-                    .tabItem { Label(Loc.tabMap.string(for: settings.language), systemImage: "map.fill") }
+                // Ordered by how often a commuter reaches for them.
                 JourneyPlannerView()
                     .tabItem { Label(Loc.tabJourney.string(for: settings.language), systemImage: "point.topleft.down.to.point.bottomright.curvepath.fill") }
                 NearbyView()
                     .tabItem { Label(Loc.tabNearby.string(for: settings.language), systemImage: "location.fill") }
+                SchematicMapView()
+                    .tabItem { Label(Loc.tabMap.string(for: settings.language), systemImage: "map.fill") }
+                LinesView()
+                    .tabItem { Label(Loc.tabLines.string(for: settings.language), systemImage: "tram.fill") }
                 SettingsView()
                     .tabItem { Label(Loc.tabSettings.string(for: settings.language), systemImage: "gearshape.fill") }
             }

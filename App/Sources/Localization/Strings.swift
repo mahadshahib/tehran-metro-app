@@ -35,6 +35,15 @@ enum Loc {
 
     // Journey
     static let planJourney = LocalizedText(en: "Plan a journey", fa: "برنامه‌ریزی سفر")
+    static let whereTo = LocalizedText(en: "Where to?", fa: "به کجا می‌روید؟")
+    static let nearest = LocalizedText(en: "Nearest", fa: "نزدیک‌ترین")
+    static let nearestToMe = LocalizedText(en: "Nearest to me", fa: "نزدیک‌ترین به من")
+    static let quickPlanHint = LocalizedText(
+        en: "Pick a destination to see step-by-step directions. Your saved routes and favorites appear here for one-tap planning.",
+        fa: "یک مقصد انتخاب کنید تا مسیر گام‌به‌گام را ببینید. مسیرهای ذخیره‌شده و علاقه‌مندی‌ها برای مسیریابی با یک لمس اینجا نمایش داده می‌شوند."
+    )
+    static let locating = LocalizedText(en: "Locating…", fa: "در حال یافتن موقعیت…")
+    static let tapToChoose = LocalizedText(en: "Tap to choose", fa: "برای انتخاب لمس کنید")
     static let from = LocalizedText(en: "From", fa: "مبدأ")
     static let to = LocalizedText(en: "To", fa: "مقصد")
     static let origin = LocalizedText(en: "Origin", fa: "مبدأ")

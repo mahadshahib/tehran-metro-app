@@ -11,6 +11,7 @@ struct RouteResultView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.m) {
+            header
             summary
             ForEach(route.legs) { leg in
                 RouteLegCard(leg: leg)
@@ -21,6 +22,18 @@ struct RouteResultView: View {
             alightRow
             footer
         }
+    }
+
+    private var header: some View {
+        HStack(spacing: DS.Spacing.s) {
+            Image(systemName: "circle.fill").font(.system(size: 9)).foregroundStyle(.green)
+            Text(stationName(route.origin)).font(.subheadline.weight(.semibold)).lineLimit(1)
+            Image(systemName: "arrow.forward").font(.caption).foregroundStyle(.secondary)
+            Image(systemName: "mappin.circle.fill").font(.system(size: 11)).foregroundStyle(.red)
+            Text(stationName(route.destination)).font(.subheadline.weight(.semibold)).lineLimit(1)
+            Spacer(minLength: 0)
+        }
+        .accessibilityElement(children: .combine)
     }
 
     private var summary: some View {

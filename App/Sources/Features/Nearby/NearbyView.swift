@@ -14,7 +14,7 @@ import MetroDomain
 struct NearbyView: View {
     @Environment(AppModel.self) private var model
     @Environment(AppSettings.self) private var settings
-    @State private var location = LocationManager()
+    @Environment(LocationManager.self) private var location
     @State private var reachability = ReachabilityMonitor()
 
     @State private var mode: Mode = .myLocation
