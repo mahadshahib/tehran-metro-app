@@ -32,9 +32,9 @@ public enum PersianNormalizer {
         "٥": "5", "٦": "6", "٧": "7", "٨": "8", "٩": "9"
     ]
 
-    /// Zero-width and formatting marks to strip entirely.
+    /// Zero-width and formatting marks to strip entirely. ZWNJ is handled
+    /// separately (mapped to a space) so half-space and space forms compare equal.
     private static let zeroWidth: Set<Character> = [
-        "\u{200C}", // ZWNJ (half-space)
         "\u{200D}", // ZWJ
         "\u{200E}", // LRM
         "\u{200F}", // RLM
@@ -55,6 +55,12 @@ public enum PersianNormalizer {
         var result = String.UnicodeScalarView()
         for scalar in text.unicodeScalars {
             let ch = Character(scalar)
+            // ZWNJ / half-space → treat as a normal space so that the half-space
+            // form ("دروازه‌دولت") and the space form ("دروازه دولت") compare equal.
+            if scalar.value == 0x200C {
+                result.append(Unicode.Scalar(0x20)!)
+                continue
+            }
             if zeroWidth.contains(ch) { continue }
             if isDiacritic(scalar) { continue }
             if let mapped = charMap[ch] {
