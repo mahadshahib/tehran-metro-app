@@ -86,8 +86,7 @@ struct RouteResultView: View {
         // Stations of this leg. First leg shows its origin; later legs reuse the
         // previous leg's transfer station, so skip their duplicated first stop.
         // The final leg's last stop is the destination, shown by `arriveRow`.
-        var stations = index == 0 ? leg.stations : Array(leg.stations.dropFirst())
-        if index == route.legs.count - 1 { stations = Array(stations.dropLast()) }
+        let stations = visibleStations(index: index, leg: leg)
         ForEach(Array(stations.enumerated()), id: \.element) { offset, stationID in
             let isBoard = index == 0 && offset == 0
             let isLegEnd = stationID == leg.to
@@ -100,6 +99,12 @@ struct RouteResultView: View {
                         showBottomLine: true)
             }
         }
+    }
+
+    private func visibleStations(index: Int, leg: RouteLeg) -> [StationID] {
+        var stations = index == 0 ? leg.stations : Array(leg.stations.dropFirst())
+        if index == route.legs.count - 1 { stations = Array(stations.dropLast()) }
+        return stations
     }
 
     private enum StopRole { case depart, normal, transfer(to: LineID), arrive }
