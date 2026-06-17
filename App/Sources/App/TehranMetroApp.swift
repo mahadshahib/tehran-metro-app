@@ -17,6 +17,7 @@ struct TehranMetroApp: App {
                 .environment(model)
                 .environment(settings)
                 .environment(location)
+                .font(.app(.body))   // default font for any unstyled Text
                 .environment(\.layoutDirection, settings.language.layoutDirection)
                 .environment(\.locale, settings.language.swiftUILocale)
                 .preferredColorScheme(settings.colorScheme)

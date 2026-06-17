@@ -41,9 +41,9 @@ struct FavoritesView: View {
                         } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("\(settings.stationName(origin)) → \(settings.stationName(dest))")
-                                    .font(.body.weight(.medium))
+                                    .font(.app(.body, weight: .medium))
                                 Text(Loc.tabJourney.string(for: lang))
-                                    .font(.caption).foregroundStyle(.secondary)
+                                    .font(.app(.caption)).foregroundStyle(.secondary)
                             }
                         }
                     }

@@ -20,7 +20,7 @@ struct StationDetailView: View {
                     linesSection(station)
                     if let address = station.addressFA {
                         Section(Loc.address.string(for: settings.language)) {
-                            Text(address).font(.metro(.body))
+                            Text(address).font(.app(.body))
                         }
                     }
                     facilitiesSection(station)
@@ -52,13 +52,13 @@ struct StationDetailView: View {
     private func headerSection(_ station: Station) -> some View {
         Section {
             VStack(alignment: .leading, spacing: DS.Spacing.s) {
-                Text(station.nameFA).font(.metro(.title2, weight: .bold))
+                Text(station.nameFA).font(.app(.title2, weight: .bold))
                     .environment(\.layoutDirection, .rightToLeft)
-                Text(station.nameEN).font(.title3).foregroundStyle(.secondary)
+                Text(station.nameEN).font(.app(.title3)).foregroundStyle(.secondary)
                     .environment(\.layoutDirection, .leftToRight)
                 if !station.isInService {
                     Label(Loc.notInService.string(for: settings.language), systemImage: "exclamationmark.triangle.fill")
-                        .font(.subheadline).foregroundStyle(.orange)
+                        .font(.app(.subheadline)).foregroundStyle(.orange)
                 }
             }
             .padding(.vertical, DS.Spacing.xs)
@@ -89,7 +89,7 @@ struct StationDetailView: View {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: DS.Spacing.s)], alignment: .leading) {
                         ForEach(items, id: \.label) { item in
                             Label(item.label, systemImage: item.symbol)
-                                .font(.subheadline)
+                                .font(.app(.subheadline))
                                 .padding(.vertical, DS.Spacing.xs)
                         }
                     }

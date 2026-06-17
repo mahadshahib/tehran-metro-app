@@ -1,16 +1,19 @@
 # Fonts
 
-Place the **Vazirmatn** TrueType files here for polished Persian typography:
+**Vazirmatn** (SIL OFL) is bundled here and used app-wide for Persian and Latin
+text — the app never falls back to the system font when it's present.
 
-- `Vazirmatn-Regular.ttf`
-- `Vazirmatn-Bold.ttf`
+## Using IRANSans / IRANYekan instead
 
-They are intentionally **not committed** (see `.gitignore`). Fetch them with:
+The font engine (`AppFont` in `Typography.swift`) auto-detects and **prefers**
+IRANSans / IRANYekan if you add them. To switch:
 
-```bash
-./scripts/fetch-fonts.sh
-```
+1. Drop the TTFs into this folder, e.g.:
+   - `IRANSansX-Regular.ttf`, `IRANSansX-Medium.ttf`, `IRANSansX-Bold.ttf`
+2. Add their filenames to `UIAppFonts` in `project.yml`.
+3. `xcodegen generate` and rebuild.
 
-The app registers any `.ttf` in its bundle at runtime (`FontRegistrar`). If the
-fonts are absent, the UI falls back gracefully to the system font — the app
-still builds and runs. Vazirmatn is licensed under the SIL Open Font License.
+`AppFont.candidates` lists the PostScript names it looks for (IRANSansX,
+IRANYekanX, …) in priority order, falling back to Vazirmatn. IRANSans is a
+commercial font, so it is intentionally **not** committed to this repo — add
+your own licensed copy.

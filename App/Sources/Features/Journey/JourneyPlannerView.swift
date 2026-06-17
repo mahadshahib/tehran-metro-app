@@ -107,7 +107,7 @@ struct JourneyPlannerView: View {
                 vm.swap()
             } label: {
                 Image(systemName: "arrow.up.arrow.down")
-                    .font(.body.weight(.semibold))
+                    .font(.app(.body, weight: .semibold))
                     .frame(width: 40, height: 40)
                     .background(.thinMaterial, in: Circle())
             }
@@ -131,20 +131,20 @@ struct JourneyPlannerView: View {
         } label: {
             HStack(spacing: DS.Spacing.m) {
                 Image(systemName: "circle.fill")
-                    .font(.system(size: 11))
+                    .font(.app(size: 11))
                     .foregroundStyle(dotColor)
                     .frame(width: 24)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(label.string(for: lang))
-                        .font(.caption).foregroundStyle(.secondary)
+                        .font(.app(.caption)).foregroundStyle(.secondary)
                     Text(isLocating ? Loc.locating.string(for: lang)
                          : (station.map { settings.stationName($0) } ?? placeholder.string(for: lang)))
-                        .font(.body.weight(.medium))
+                        .font(.app(.body, weight: .medium))
                         .foregroundStyle(station == nil ? .secondary : .primary)
                         .lineLimit(1)
                 }
                 Spacer()
-                Image(systemName: "chevron.forward").font(.footnote).foregroundStyle(.tertiary)
+                Image(systemName: "chevron.forward").font(.app(.footnote)).foregroundStyle(.tertiary)
             }
             .frame(minHeight: 52)
             .padding(.horizontal, DS.Spacing.s)
@@ -235,9 +235,9 @@ struct JourneyPlannerView: View {
                 Image(systemName: "bookmark.fill").foregroundStyle(.tint)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\(settings.stationName(origin)) → \(settings.stationName(dest))")
-                        .font(.body.weight(.medium)).foregroundStyle(.primary).lineLimit(1)
+                        .font(.app(.body, weight: .medium)).foregroundStyle(.primary).lineLimit(1)
                     Text(Loc.findRoute.string(for: lang))
-                        .font(.caption).foregroundStyle(.secondary)
+                        .font(.app(.caption)).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Image(systemName: "arrow.forward.circle.fill").foregroundStyle(.tint)
@@ -252,13 +252,13 @@ struct JourneyPlannerView: View {
 
     private func sectionHeader(_ text: LocalizedText) -> some View {
         Text(text.string(for: lang))
-            .font(.headline)
+            .font(.app(.headline))
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func infoCard(_ message: String, systemImage: String, tint: Color) -> some View {
         Label(message, systemImage: systemImage)
-            .font(.subheadline)
+            .font(.app(.subheadline))
             .foregroundStyle(tint)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(DS.Spacing.l)

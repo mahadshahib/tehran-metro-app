@@ -7,7 +7,7 @@ struct PrimaryButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.headline)
+            .font(.app(.headline))
             .frame(maxWidth: .infinity, minHeight: 52)
             .background(
                 (enabled ? Color.accentColor : Color.secondary.opacity(0.4)),
@@ -26,7 +26,7 @@ struct ChipButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.subheadline.weight(.medium))
+            .font(.app(.subheadline, weight: .medium))
             .padding(.horizontal, DS.Spacing.m)
             .padding(.vertical, DS.Spacing.s)
             .background(tint.opacity(0.12), in: Capsule())

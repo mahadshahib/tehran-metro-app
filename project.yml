@@ -46,6 +46,10 @@ targets:
         CFBundleLocalizations:
           - en
           - fa
+        UIAppFonts:
+          - Vazirmatn-Regular.ttf
+          - Vazirmatn-Medium.ttf
+          - Vazirmatn-Bold.ttf
     dependencies:
       - package: MetroDomain
       - package: MetroData

@@ -89,12 +89,12 @@ private struct StationLineRow: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(settings.stationName(station))
-                    .font(.body.weight(isFirst || isLast ? .semibold : .regular))
+                    .font(.app(.body, weight: isFirst || isLast ? .semibold : .regular))
                     .strikethrough(!station.isInService)
                     .foregroundStyle(station.isInService ? .primary : .secondary)
                 if isFirst || isLast {
                     Text(Loc.terminal.string(for: settings.language))
-                        .font(.caption2).foregroundStyle(.secondary)
+                        .font(.app(.caption2)).foregroundStyle(.secondary)
                 }
             }
             Spacer()

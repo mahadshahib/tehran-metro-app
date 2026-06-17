@@ -33,8 +33,8 @@ final class AppSettings {
         if let raw = defaults.string(forKey: Keys.language), let lang = AppLanguage(rawValue: raw) {
             self.language = lang
         } else {
-            let preferred = Locale.preferredLanguages.first ?? "en"
-            self.language = preferred.hasPrefix("fa") ? .farsi : .english
+            // Default to Persian (Farsi) on first launch; user can switch later.
+            self.language = .farsi
         }
         self.theme = defaults.string(forKey: Keys.theme).flatMap(Theme.init) ?? .system
         self.nameDisplay = defaults.string(forKey: Keys.nameDisplay).flatMap(NameDisplay.init) ?? .auto

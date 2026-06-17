@@ -119,7 +119,7 @@ struct NearbyView: View {
 
             if mode == .exploreMap {
                 Image(systemName: "scope")
-                    .font(.system(size: 34, weight: .light))
+                    .font(.app(size: 34, weight: .light))
                     .foregroundStyle(.primary)
                     .shadow(radius: 2)
                     .allowsHitTesting(false)
@@ -144,7 +144,7 @@ struct NearbyView: View {
             if !reachability.isOnline {
                 Section {
                     Label(Loc.offlineMapNote.string(for: lang), systemImage: "wifi.slash")
-                        .font(.footnote).foregroundStyle(.secondary)
+                        .font(.app(.footnote)).foregroundStyle(.secondary)
                 }
             }
 
@@ -170,7 +170,7 @@ struct NearbyView: View {
             if location.isDenied {
                 Section {
                     Label(Loc.locationDenied.string(for: lang), systemImage: "location.slash")
-                        .font(.subheadline).foregroundStyle(.orange)
+                        .font(.app(.subheadline)).foregroundStyle(.orange)
                 }
             } else if location.lastCoordinate == nil {
                 Section {
@@ -187,13 +187,13 @@ struct NearbyView: View {
                     } icon: {
                         Image(systemName: "dot.radiowaves.left.and.right").foregroundStyle(.green)
                     }
-                    .font(.footnote)
+                    .font(.app(.footnote))
                 }
             }
         } else {
             Section {
                 Label(Loc.panToExplore.string(for: lang), systemImage: "hand.draw")
-                    .font(.footnote).foregroundStyle(.secondary)
+                    .font(.app(.footnote)).foregroundStyle(.secondary)
             }
         }
     }
@@ -203,7 +203,7 @@ struct NearbyView: View {
             (reachability.isOnline ? Loc.online : Loc.offline).string(for: lang),
             systemImage: reachability.isOnline ? "wifi" : "wifi.slash"
         )
-        .font(.caption2)
+        .font(.app(.caption2))
         .foregroundStyle(reachability.isOnline ? Color.secondary : Color.orange)
         .labelStyle(.titleAndIcon)
     }
@@ -243,7 +243,7 @@ private struct NearbyRow: View {
                     Label(Loc.walkMinutes(Numerals.walkingMinutes(meters: meters), language: lang),
                           systemImage: "figure.walk")
                 }
-                .font(.caption).foregroundStyle(.secondary)
+                .font(.app(.caption)).foregroundStyle(.secondary)
             }
             if isNearest {
                 HStack(spacing: DS.Spacing.l) {
@@ -254,7 +254,7 @@ private struct NearbyRow: View {
                         Label(Loc.planFromHere.string(for: lang), systemImage: "point.topleft.down.to.point.bottomright.curvepath")
                     }
                 }
-                .font(.subheadline)
+                .font(.app(.subheadline))
                 .buttonStyle(.borderless)
             }
         }

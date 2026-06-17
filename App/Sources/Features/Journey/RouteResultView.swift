@@ -1,76 +1,161 @@
 import SwiftUI
 import MetroDomain
 
+/// Shows a planned journey as a full station-by-station timeline: board, every
+/// stop ridden, each transfer station, and arrival — with line-colored track.
 struct RouteResultView: View {
     @Environment(AppModel.self) private var model
     @Environment(AppSettings.self) private var settings
     let route: Route
     var onSave: (() -> Void)? = nil
 
+    @State private var expanded = true
+
     private var lang: AppLanguage { settings.language }
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.m) {
-            header
-            summary
-            ForEach(route.legs) { leg in
-                RouteLegCard(leg: leg)
-                if leg.id != route.legs.last?.id {
-                    transferRow(at: leg.to)
-                }
-            }
-            alightRow
+            summaryCard
+            timelineCard
             footer
         }
     }
 
-    private var header: some View {
-        HStack(spacing: DS.Spacing.s) {
-            Image(systemName: "circle.fill").font(.system(size: 9)).foregroundStyle(.green)
-            Text(stationName(route.origin)).font(.subheadline.weight(.semibold)).lineLimit(1)
-            Image(systemName: "arrow.forward").font(.caption).foregroundStyle(.secondary)
-            Image(systemName: "mappin.circle.fill").font(.system(size: 11)).foregroundStyle(.red)
-            Text(stationName(route.destination)).font(.subheadline.weight(.semibold)).lineLimit(1)
-            Spacer(minLength: 0)
-        }
-        .accessibilityElement(children: .combine)
-    }
+    // MARK: - Summary
 
-    private var summary: some View {
+    private var summaryCard: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.s) {
-            HStack(spacing: DS.Spacing.m) {
-                Label(Numerals.minutes(route.estimate.totalMinutes, language: lang), systemImage: "clock")
-                    .font(.headline)
-                Text("·").foregroundStyle(.secondary)
-                Text(Loc.stopsLabel(route.totalStops, language: lang))
-                Text("·").foregroundStyle(.secondary)
-                Text(Loc.transfersLabel(route.transferCount, language: lang))
+            HStack(spacing: DS.Spacing.s) {
+                Image(systemName: "clock.fill").foregroundStyle(.tint)
+                Text(Numerals.minutes(route.estimate.totalMinutes, language: lang))
+                    .font(.app(.title3, weight: .bold))
+                Text(Loc.approximate.string(for: lang))
+                    .font(.app(.caption2)).foregroundStyle(.secondary)
+                Spacer()
             }
-            .font(.subheadline)
-            Text(Loc.approximate.string(for: lang))
-                .font(.caption2).foregroundStyle(.secondary)
+            HStack(spacing: DS.Spacing.m) {
+                Label(Loc.stopsLabel(route.totalStops, language: lang), systemImage: "smallcircle.filled.circle")
+                Label(Loc.transfersLabel(route.transferCount, language: lang), systemImage: "arrow.triangle.swap")
+            }
+            .font(.app(.subheadline)).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .metroCard()
+        .padding(DS.Spacing.l)
+        .background(.background, in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
     }
 
-    private func transferRow(at stationID: StationID) -> some View {
-        HStack(spacing: DS.Spacing.s) {
-            Image(systemName: "figure.walk.arrival").foregroundStyle(.secondary)
-            Text("\(Loc.transferAt.string(for: lang)) \(stationName(stationID))")
-                .font(.subheadline).foregroundStyle(.secondary)
+    // MARK: - Timeline
+
+    private var timelineCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text(Loc.routeSteps.string(for: lang)).font(.app(.headline))
+                Spacer()
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { expanded.toggle() }
+                } label: {
+                    Text((expanded ? Loc.hideStations : Loc.showStations).string(for: lang))
+                        .font(.app(.footnote))
+                }
+            }
+            .padding(.bottom, DS.Spacing.s)
+
+            ForEach(Array(route.legs.enumerated()), id: \.offset) { index, leg in
+                legBlock(index: index, leg: leg)
+            }
+            arriveRow
         }
-        .padding(.leading, DS.Spacing.l)
+        .padding(DS.Spacing.l)
+        .background(.background, in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
     }
 
-    private var alightRow: some View {
+    @ViewBuilder
+    private func legBlock(index: Int, leg: RouteLeg) -> some View {
+        let color = Color(hex: leg.colorHex)
+        // Leg header: which line, toward which terminal.
         HStack(spacing: DS.Spacing.s) {
-            Image(systemName: "mappin.and.ellipse").foregroundStyle(.green)
-            Text("\(Loc.alightAt.string(for: lang)) \(stationName(route.destination))")
-                .font(.subheadline.weight(.medium))
+            LineBadge(lineID: leg.line)
+            Image(systemName: "arrow.forward").font(.app(.caption2)).foregroundStyle(.secondary)
+            Text(name(leg.towardTerminal)).font(.app(.subheadline, weight: .medium)).lineLimit(1)
+            Spacer()
+            Text(Loc.stopsLabel(leg.stopCount, language: lang))
+                .font(.app(.caption)).foregroundStyle(.secondary)
         }
-        .padding(.leading, DS.Spacing.l)
+        .padding(.vertical, DS.Spacing.xs)
+
+        // Stations of this leg. First leg shows its origin; later legs reuse the
+        // previous leg's transfer station, so skip their duplicated first stop.
+        // The final leg's last stop is the destination, shown by `arriveRow`.
+        var stations = index == 0 ? leg.stations : Array(leg.stations.dropFirst())
+        if index == route.legs.count - 1 { stations = Array(stations.dropLast()) }
+        ForEach(Array(stations.enumerated()), id: \.element) { offset, stationID in
+            let isBoard = index == 0 && offset == 0
+            let isLegEnd = stationID == leg.to
+            let isJourneyTransfer = isLegEnd && index < route.legs.count - 1
+            if expanded || isBoard || isJourneyTransfer {
+                stopRow(stationID: stationID, color: color,
+                        emphasized: isBoard || isJourneyTransfer,
+                        role: isBoard ? .depart : (isJourneyTransfer ? .transfer(to: route.legs[index + 1].line) : .normal),
+                        showTopLine: !isBoard,
+                        showBottomLine: true)
+            }
+        }
     }
+
+    private enum StopRole { case depart, normal, transfer(to: LineID), arrive }
+
+    private func stopRow(stationID: StationID, color: Color, emphasized: Bool,
+                         role: StopRole, showTopLine: Bool, showBottomLine: Bool) -> some View {
+        let rowHeight: CGFloat = emphasized ? 46 : 32
+        return HStack(alignment: .center, spacing: DS.Spacing.m) {
+            trackCell(color: color, emphasized: emphasized,
+                      showTopLine: showTopLine, showBottomLine: showBottomLine, height: rowHeight)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(name(stationID))
+                    .font(.app(emphasized ? .body : .subheadline, weight: emphasized ? .semibold : .regular))
+                    .foregroundStyle(emphasized ? .primary : .secondary)
+                switch role {
+                case .depart:
+                    Text(Loc.depart.string(for: lang)).font(.app(.caption2)).foregroundStyle(.secondary)
+                case .transfer(let line):
+                    HStack(spacing: DS.Spacing.xs) {
+                        Text(Loc.transferTo.string(for: lang)).font(.app(.caption2)).foregroundStyle(.orange)
+                        LineBadge(lineID: line, compact: true)
+                    }
+                case .arrive:
+                    Text(Loc.arrive.string(for: lang)).font(.app(.caption2)).foregroundStyle(.green)
+                case .normal:
+                    EmptyView()
+                }
+            }
+            Spacer()
+        }
+        .frame(height: rowHeight)
+    }
+
+    private var arriveRow: some View {
+        stopRow(stationID: route.destination, color: Color(hex: route.legs.last?.colorHex ?? "#34C759"),
+                emphasized: true, role: .arrive, showTopLine: true, showBottomLine: false)
+    }
+
+    /// The vertical line + node drawn on the leading edge of each stop.
+    private func trackCell(color: Color, emphasized: Bool, showTopLine: Bool,
+                           showBottomLine: Bool, height: CGFloat) -> some View {
+        ZStack {
+            VStack(spacing: 0) {
+                Rectangle().fill(showTopLine ? color : .clear)
+                Rectangle().fill(showBottomLine ? color : .clear)
+            }
+            .frame(width: 5, height: height)
+            Circle()
+                .fill(emphasized ? color : Color(.systemBackground))
+                .frame(width: emphasized ? 16 : 10, height: emphasized ? 16 : 10)
+                .overlay(Circle().stroke(color, lineWidth: emphasized ? 0 : 3))
+        }
+        .frame(width: 22, height: height)
+    }
+
+    // MARK: - Footer
 
     private var footer: some View {
         HStack {
@@ -86,47 +171,8 @@ struct RouteResultView: View {
                 }
             }
         }
-        .font(.subheadline)
-        .padding(.top, DS.Spacing.s)
-    }
-
-    private func stationName(_ id: StationID) -> String {
-        model.station(id).map { settings.stationName($0) } ?? id
-    }
-}
-
-/// A single leg: board line X toward terminal Y, ride N stops.
-struct RouteLegCard: View {
-    @Environment(AppModel.self) private var model
-    @Environment(AppSettings.self) private var settings
-    let leg: RouteLeg
-
-    private var lang: AppLanguage { settings.language }
-    private var color: Color { Color(hex: leg.colorHex) }
-
-    var body: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.m) {
-            RoundedRectangle(cornerRadius: 3).fill(color).frame(width: 6)
-            VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                HStack(spacing: DS.Spacing.s) {
-                    LineBadge(lineID: leg.line)
-                    Text("\(Loc.toward.string(for: lang)) \(name(leg.towardTerminal))")
-                        .font(.subheadline.weight(.medium))
-                        .lineLimit(1)
-                }
-                Text("\(Loc.board.string(for: lang)): \(name(leg.from))")
-                    .font(.subheadline)
-                Text(Loc.stopsLabel(leg.stopCount, language: lang))
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-            Spacer()
-        }
-        .padding(DS.Spacing.m)
-        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: DS.Radius.m))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(
-            "\(Loc.lineName(leg.line, language: lang)), \(Loc.toward.string(for: lang)) \(name(leg.towardTerminal)), \(Loc.stopsLabel(leg.stopCount, language: lang))"
-        )
+        .font(.app(.subheadline))
+        .padding(.horizontal, DS.Spacing.xs)
     }
 
     private func name(_ id: StationID) -> String {

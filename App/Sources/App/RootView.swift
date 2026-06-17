@@ -9,7 +9,7 @@ struct RootView: View {
             ContentUnavailableView {
                 Label("Data failed to load", systemImage: "exclamationmark.triangle")
             } description: {
-                Text(error).font(.footnote)
+                Text(error).font(.app(.footnote))
             }
         } else {
             TabView {

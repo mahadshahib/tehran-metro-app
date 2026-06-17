@@ -52,18 +52,18 @@ private struct LineRow: View {
                 .frame(width: 6, height: 34)
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                 Text(Loc.lineName(line.id, language: settings.language))
-                    .font(.headline)
+                    .font(.app(.headline))
                 if let first = line.terminals.first, let last = line.terminals.dropFirst().first,
                    let a = model.station(first), let b = model.station(last) {
                     Text("\(settings.stationName(a)) — \(settings.stationName(b))")
-                        .font(.subheadline)
+                        .font(.app(.subheadline))
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
             }
             Spacer()
             Text(Loc.stopsLabel(line.allStations.count, language: settings.language))
-                .font(.caption)
+                .font(.app(.caption))
                 .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)

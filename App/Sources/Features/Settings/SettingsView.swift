@@ -9,7 +9,7 @@ struct SettingsView: View {
         let lang = settings.language
         return NavigationStack {
             List {
-                Section(Loc.favorites.string(for: lang)) {
+                Section {
                     NavigationLink {
                         FavoritesView()
                     } label: {
@@ -17,38 +17,55 @@ struct SettingsView: View {
                     }
                 }
 
+                // Each option is its own selectable row (no non-tappable title row).
                 Section(Loc.language.string(for: lang)) {
-                    Picker(Loc.language.string(for: lang), selection: $settings.language) {
-                        Text(Loc.languageEnglish.string(for: lang)).tag(AppLanguage.english)
-                        Text(Loc.languageFarsi.string(for: lang)).tag(AppLanguage.farsi)
+                    selectRow(Loc.languageEnglish, isOn: settings.language == .english) {
+                        settings.language = .english
                     }
-                    .pickerStyle(.inline)
+                    selectRow(Loc.languageFarsi, isOn: settings.language == .farsi) {
+                        settings.language = .farsi
+                    }
                 }
 
                 Section(Loc.appearance.string(for: lang)) {
-                    Picker(Loc.appearance.string(for: lang), selection: $settings.theme) {
-                        Text(Loc.themeSystem.string(for: lang)).tag(AppSettings.Theme.system)
-                        Text(Loc.themeLight.string(for: lang)).tag(AppSettings.Theme.light)
-                        Text(Loc.themeDark.string(for: lang)).tag(AppSettings.Theme.dark)
-                    }
-                    .pickerStyle(.segmented)
+                    selectRow(Loc.themeSystem, isOn: settings.theme == .system) { settings.theme = .system }
+                    selectRow(Loc.themeLight, isOn: settings.theme == .light) { settings.theme = .light }
+                    selectRow(Loc.themeDark, isOn: settings.theme == .dark) { settings.theme = .dark }
                 }
 
                 Section(Loc.nameDisplay.string(for: lang)) {
-                    Picker(Loc.nameDisplay.string(for: lang), selection: $settings.nameDisplay) {
-                        Text(Loc.nameAuto.string(for: lang)).tag(AppSettings.NameDisplay.auto)
-                        Text(Loc.nameEnglish.string(for: lang)).tag(AppSettings.NameDisplay.english)
-                        Text(Loc.nameFarsi.string(for: lang)).tag(AppSettings.NameDisplay.farsi)
-                    }
-                    .pickerStyle(.inline)
+                    selectRow(Loc.nameAuto, isOn: settings.nameDisplay == .auto) { settings.nameDisplay = .auto }
+                    selectRow(Loc.nameEnglish, isOn: settings.nameDisplay == .english) { settings.nameDisplay = .english }
+                    selectRow(Loc.nameFarsi, isOn: settings.nameDisplay == .farsi) { settings.nameDisplay = .farsi }
                 }
 
                 Section(Loc.about.string(for: lang)) {
                     Text(Loc.dataDisclaimer.string(for: lang))
-                        .font(.footnote).foregroundStyle(.secondary)
+                        .font(.app(.footnote)).foregroundStyle(.secondary)
                 }
             }
             .navigationTitle(Loc.tabSettings.string(for: lang))
         }
+    }
+
+    /// A fully tappable option row with a trailing checkmark when selected.
+    private func selectRow(_ text: LocalizedText, isOn: Bool, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.selection()
+            action()
+        } label: {
+            HStack {
+                Text(text.string(for: settings.language))
+                    .foregroundStyle(.primary)
+                Spacer()
+                if isOn {
+                    Image(systemName: "checkmark")
+                        .font(.app(.body, weight: .semibold))
+                        .foregroundStyle(.tint)
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }

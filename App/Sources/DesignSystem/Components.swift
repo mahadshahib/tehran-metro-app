@@ -17,7 +17,7 @@ struct LineBadge: View {
         let number = Numerals.string(lineID, language: settings.language)
         if compact {
             Text(number)
-                .font(.caption.bold())
+                .font(.app(.caption, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(width: 20, height: 20)
                 .background(color, in: Circle())
@@ -26,7 +26,7 @@ struct LineBadge: View {
             HStack(spacing: DS.Spacing.xs) {
                 Circle().fill(color).frame(width: DS.Size.lineDot, height: DS.Size.lineDot)
                 Text(Loc.lineName(lineID, language: settings.language))
-                    .font(.subheadline.weight(.medium))
+                    .font(.app(.subheadline, weight: .medium))
             }
             .padding(.horizontal, DS.Spacing.s)
             .padding(.vertical, DS.Spacing.xs)
@@ -47,17 +47,17 @@ struct StationRow: View {
         HStack(spacing: DS.Spacing.m) {
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                 Text(settings.stationName(station))
-                    .font(.body.weight(.medium))
+                    .font(.app(.body, weight: .medium))
                     .foregroundStyle(.primary)
                 HStack(spacing: DS.Spacing.s) {
                     if station.isInterchange {
                         Label(Loc.interchange.string(for: settings.language), systemImage: "arrow.triangle.swap")
-                            .font(.caption2)
+                            .font(.app(.caption2))
                             .foregroundStyle(.secondary)
                     }
                     if !station.isInService {
                         Label(Loc.notInService.string(for: settings.language), systemImage: "exclamationmark.triangle")
-                            .font(.caption2)
+                            .font(.app(.caption2))
                             .foregroundStyle(.orange)
                     }
                 }
