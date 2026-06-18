@@ -14,22 +14,26 @@ struct SchematicMapView: View {
     @State private var lastPan: CGSize = .zero
     @State private var selected: StationID?
 
-    private let padding: CGFloat = 44
-    private var layout: SchematicLayout { SchematicLayout(network: model.network) }
+    private let padding: CGFloat = 26
+    // Built once and cached — rebuilding the projection every frame caused jank.
+    @State private var layout: SchematicLayout?
 
     var body: some View {
         NavigationStack {
             GeometryReader { geo in
                 let size = geo.size
                 ZStack(alignment: .bottom) {
-                    Canvas { ctx, _ in draw(&ctx, size: size) }
+                    Canvas { ctx, _ in
+                        if let layout { draw(&ctx, layout: layout, size: size) }
+                    }
                         .background(mapBackground)
                         .contentShape(Rectangle())
                         .gesture(magnification)
                         .simultaneousGesture(drag)
                         .onTapGesture(count: 2) { location in zoomIn(at: location, size: size) }
                         .onTapGesture { location in
-                            if let id = layout.nearestStation(to: location, in: size, zoom: zoom, pan: pan, padding: padding) {
+                            if let layout,
+                               let id = layout.nearestStation(to: location, in: size, zoom: zoom, pan: pan, padding: padding) {
                                 Haptics.selection()
                                 selected = id
                             }
@@ -37,6 +41,7 @@ struct SchematicMapView: View {
                         .environment(\.layoutDirection, .leftToRight)
                     legend
                 }
+                .onAppear { if layout == nil { layout = SchematicLayout(network: model.network) } }
             }
             .ignoresSafeArea(edges: .bottom)
             .navigationTitle(Loc.tabMap.string(for: settings.language))
@@ -63,8 +68,8 @@ struct SchematicMapView: View {
 
     // MARK: - Drawing
 
-    private func draw(_ ctx: inout GraphicsContext, size: CGSize) {
-        let lineWidth = min(max(4.5 * zoom, 3), 10)
+    private func draw(_ ctx: inout GraphicsContext, layout: SchematicLayout, size: CGSize) {
+        let lineWidth = min(max(4 * zoom, 2.5), 9)
 
         // 1) Line tracks.
         for poly in layout.polylines {
@@ -143,7 +148,7 @@ struct SchematicMapView: View {
 
     private var magnification: some Gesture {
         MagnificationGesture()
-            .onChanged { value in zoom = min(max(lastZoom * value, 0.8), 6) }
+            .onChanged { value in zoom = min(max(lastZoom * value, 0.8), 14) }
             .onEnded { _ in lastZoom = zoom }
     }
 
@@ -161,10 +166,13 @@ struct SchematicMapView: View {
             if zoom > 1.5 {
                 resetView()
             } else {
-                zoom = 2.6; lastZoom = 2.6
-                // Re-center the tapped point toward the middle.
-                pan = CGSize(width: (size.width / 2 - location.x) * 1.2,
-                             height: (size.height / 2 - location.y) * 1.2)
+                // Zoom toward the tapped point, keeping it fixed on screen.
+                let z0 = zoom, z1: CGFloat = 4
+                let ratio = z1 / z0
+                let cx = size.width / 2, cy = size.height / 2
+                pan = CGSize(width: (location.x - cx) * (1 - ratio) + pan.width * ratio,
+                             height: (location.y - cy) * (1 - ratio) + pan.height * ratio)
+                zoom = z1; lastZoom = z1
                 lastPan = pan
             }
         }

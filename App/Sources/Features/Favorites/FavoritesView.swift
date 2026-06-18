@@ -14,7 +14,7 @@ struct FavoritesView: View {
 
     var body: some View {
         List {
-            Section(Loc.favorites.string(for: lang)) {
+            Section(header: SectionHeaderLabel(Loc.favorites.string(for: lang))) {
                 if favorites.isEmpty {
                     Text(Loc.noFavorites.string(for: lang)).foregroundStyle(.secondary)
                 }
@@ -30,7 +30,7 @@ struct FavoritesView: View {
                 }
             }
 
-            Section(Loc.savedRoutes.string(for: lang)) {
+            Section(header: SectionHeaderLabel(Loc.savedRoutes.string(for: lang))) {
                 if savedRoutes.isEmpty {
                     Text(Loc.noSavedRoutes.string(for: lang)).foregroundStyle(.secondary)
                 }

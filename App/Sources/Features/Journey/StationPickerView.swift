@@ -25,7 +25,7 @@ struct StationPickerView: View {
                     nearestSection
                     quickSection(Loc.favorites, ids: favorites.map(\.stationID))
                     quickSection(Loc.recents, ids: recents.map(\.stationID))
-                    Section(Loc.stations.string(for: settings.language)) {
+                    Section(header: SectionHeaderLabel(Loc.stations.string(for: settings.language))) {
                         ForEach(model.network.serviceStations) { row($0) }
                     }
                 } else {
@@ -51,7 +51,7 @@ struct StationPickerView: View {
     private var nearestSection: some View {
         if let coordinate = location.lastCoordinate,
            let nearest = model.network.nearestStations(to: coordinate, limit: 1).first {
-            Section(Loc.nearestToMe.string(for: settings.language)) {
+            Section(header: SectionHeaderLabel(Loc.nearestToMe.string(for: settings.language))) {
                 row(nearest)
             }
         } else if !location.isDenied {
@@ -69,7 +69,7 @@ struct StationPickerView: View {
     private func quickSection(_ titleText: LocalizedText, ids: [StationID]) -> some View {
         let stations = ids.compactMap { model.station($0) }
         if !stations.isEmpty {
-            Section(titleText.string(for: settings.language)) {
+            Section(header: SectionHeaderLabel(titleText.string(for: settings.language))) {
                 ForEach(stations) { row($0) }
             }
         }

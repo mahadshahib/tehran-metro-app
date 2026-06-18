@@ -11,7 +11,7 @@ struct LinesView: View {
         NavigationStack {
             List {
                 if searchText.isEmpty {
-                    Section(Loc.lines.string(for: settings.language)) {
+                    Section(header: SectionHeaderLabel(Loc.lines.string(for: settings.language))) {
                         ForEach(model.network.sortedLines) { line in
                             NavigationLink(value: NavTarget.line(line.id)) {
                                 LineRow(line: line)
@@ -19,7 +19,7 @@ struct LinesView: View {
                         }
                     }
                 } else {
-                    Section(Loc.stations.string(for: settings.language)) {
+                    Section(header: SectionHeaderLabel(Loc.stations.string(for: settings.language))) {
                         let results = model.network.search(searchText)
                         if results.isEmpty {
                             Text(Loc.noResults.string(for: settings.language))

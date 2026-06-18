@@ -41,7 +41,7 @@ struct RouteResultView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(DS.Spacing.l)
-        .background(.background, in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
     }
 
     // MARK: - Timeline
@@ -66,7 +66,7 @@ struct RouteResultView: View {
             arriveRow
         }
         .padding(DS.Spacing.l)
-        .background(.background, in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
     }
 
     @ViewBuilder

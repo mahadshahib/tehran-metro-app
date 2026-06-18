@@ -19,7 +19,7 @@ struct StationDetailView: View {
                     headerSection(station)
                     linesSection(station)
                     if let address = station.addressFA {
-                        Section(Loc.address.string(for: settings.language)) {
+                        Section(header: SectionHeaderLabel(Loc.address.string(for: settings.language))) {
                             Text(address).font(.app(.body))
                         }
                     }
@@ -66,7 +66,7 @@ struct StationDetailView: View {
     }
 
     private func linesSection(_ station: Station) -> some View {
-        Section(Loc.linesServed.string(for: settings.language)) {
+        Section(header: SectionHeaderLabel(Loc.linesServed.string(for: settings.language))) {
             ForEach(station.lines, id: \.self) { lineID in
                 NavigationLink(value: NavTarget.line(lineID)) {
                     HStack {
@@ -85,7 +85,7 @@ struct StationDetailView: View {
         let items = FacilityCatalog.available(in: station.facilities, language: settings.language)
         return Group {
             if !items.isEmpty {
-                Section(Loc.facilities.string(for: settings.language)) {
+                Section(header: SectionHeaderLabel(Loc.facilities.string(for: settings.language))) {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: DS.Spacing.s)], alignment: .leading) {
                         ForEach(items, id: \.label) { item in
                             Label(item.label, systemImage: item.symbol)

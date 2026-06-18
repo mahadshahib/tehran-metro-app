@@ -150,7 +150,7 @@ struct NearbyView: View {
 
             statusSection
 
-            Section(Loc.nearestStations.string(for: lang)) {
+            Section(header: SectionHeaderLabel(Loc.nearestStations.string(for: lang))) {
                 if nearest.isEmpty {
                     Text(Loc.locationUnavailable.string(for: lang)).foregroundStyle(.secondary)
                 }

@@ -30,7 +30,7 @@ struct LineDetailView: View {
                 }
                 ForEach(Array(line.branches.enumerated()), id: \.offset) { _, branch in
                     if branch.count > 1 {
-                        Section(branchTitle(branch)) {
+                        Section(header: SectionHeaderLabel(branchTitle(branch))) {
                             ForEach(Array(branch.enumerated()), id: \.element) { index, stationID in
                                 if let station = model.station(stationID) {
                                     NavigationLink(value: NavTarget.station(stationID)) {

@@ -116,7 +116,7 @@ struct JourneyPlannerView: View {
             .accessibilityLabel(Loc.swap.string(for: lang))
         }
         .padding(DS.Spacing.s)
-        .background(.background, in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.l, style: .continuous))
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }
 
@@ -243,7 +243,7 @@ struct JourneyPlannerView: View {
                 Image(systemName: "arrow.forward.circle.fill").foregroundStyle(.tint)
             }
             .padding(DS.Spacing.m)
-            .background(.background, in: RoundedRectangle(cornerRadius: DS.Radius.m, style: .continuous))
+            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: DS.Radius.m, style: .continuous))
         }
         .buttonStyle(.plain)
     }

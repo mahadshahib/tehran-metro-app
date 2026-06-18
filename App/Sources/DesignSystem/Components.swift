@@ -83,3 +83,16 @@ struct EmptyStateView: View {
         ContentUnavailableView(message, systemImage: systemImage)
     }
 }
+
+/// A `List`/`Form` section header that uses the app font (SwiftUI's default
+/// section header ignores the environment font, so we supply our own).
+struct SectionHeaderLabel: View {
+    let text: String
+    init(_ text: String) { self.text = text }
+    var body: some View {
+        Text(text)
+            .font(.app(.footnote, weight: .semibold))
+            .textCase(nil)
+            .foregroundStyle(.secondary)
+    }
+}
