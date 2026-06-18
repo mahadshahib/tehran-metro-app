@@ -1,9 +1,11 @@
 import SwiftUI
 import MetroDomain
 
-/// A custom-drawn 2D metro map: line-colored tracks, outlined station nodes,
-/// emphasized interchanges, station labels, smooth pan/zoom, and tap-to-detail.
-/// Fully offline. Geography never mirrors in RTL — only the chrome does.
+/// A custom-drawn **schematic** metro diagram with evenly-spaced stations
+/// (positions come from a cached force-directed layout, not raw geography — the
+/// geographic map lives in the Nearby tab). Line-colored tracks, outlined nodes,
+/// emphasized interchanges, labels, smooth pan/zoom, and tap-to-detail. Fully
+/// offline; geography never mirrors in RTL — only the chrome does.
 struct SchematicMapView: View {
     @Environment(AppModel.self) private var model
     @Environment(AppSettings.self) private var settings
@@ -39,9 +41,12 @@ struct SchematicMapView: View {
                             }
                         }
                         .environment(\.layoutDirection, .leftToRight)
+                    if layout == nil {
+                        ProgressView().controlSize(.large)
+                    }
                     legend
                 }
-                .onAppear { if layout == nil { layout = SchematicLayout(network: model.network) } }
+                .task { await buildLayoutIfNeeded() }
             }
             .ignoresSafeArea(edges: .bottom)
             .navigationTitle(Loc.tabMap.string(for: settings.language))
@@ -59,6 +64,16 @@ struct SchematicMapView: View {
                     .presentationDetents([.medium, .large])
             }
         }
+    }
+
+    /// Compute the (heavy) force-directed layout once, off the main thread.
+    private func buildLayoutIfNeeded() async {
+        guard layout == nil else { return }
+        let network = model.network
+        let computed = await Task.detached(priority: .userInitiated) {
+            SchematicLayout(network: network)
+        }.value
+        layout = computed
     }
 
     private var mapBackground: some View {
