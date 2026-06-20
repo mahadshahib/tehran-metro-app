@@ -1,11 +1,11 @@
 <img width="100px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Tehran_Metro_Logo.svg/200px-Tehran_Metro_Logo.svg.png"/>
 
-# Tehran Metro — Native iOS App
+# مترو همراه (Metro Hamrah) — Native iOS App
 
 A production-quality, **offline-first** native iOS app (Swift + SwiftUI, iOS 17+)
 for the Tehran Metro: browse lines and stations, plan journeys with step-by-step
 directions, view a custom schematic map, and find the nearest station. Fully
-bilingual (Farsi / English) with first-class RTL support.
+bilingual (Farsi / English) with first-class RTL support. A product of **CheetahTeam**.
 
 ### Features
 - **Lines & stations** — official colors, ordered stations, interchange badges,

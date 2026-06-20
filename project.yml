@@ -31,7 +31,7 @@ targets:
     info:
       path: App/Info.plist
       properties:
-        CFBundleDisplayName: Tehran Metro
+        CFBundleDisplayName: مترو همراه
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:

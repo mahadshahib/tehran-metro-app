@@ -11,7 +11,7 @@ enum Loc {
     static let tabSettings = LocalizedText(en: "Settings", fa: "تنظیمات")
 
     // General
-    static let appName = LocalizedText(en: "Tehran Metro", fa: "مترو تهران")
+    static let appName = LocalizedText(en: "Metro Hamrah", fa: "مترو همراه")
     static let search = LocalizedText(en: "Search", fa: "جستجو")
     static let searchStations = LocalizedText(en: "Search stations", fa: "جستجوی ایستگاه")
     static let cancel = LocalizedText(en: "Cancel", fa: "انصراف")
@@ -147,7 +147,7 @@ enum Loc {
     static let cheetahTagline = LocalizedText(en: "Background, multi-part downloads", fa: "دانلود چندبخشی در پس‌زمینه")
 
     // Onboarding
-    static let onboardWelcomeTitle = LocalizedText(en: "Tehran Metro", fa: "مترو تهران")
+    static let onboardWelcomeTitle = LocalizedText(en: "Metro Hamrah", fa: "مترو همراه")
     static let onboardWelcomeBody = LocalizedText(
         en: "Plan trips, browse every line, and find the nearest station — fully offline.",
         fa: "سفرها را برنامه‌ریزی کنید، همه خطوط را ببینید و نزدیک‌ترین ایستگاه را بیابید — کاملاً آفلاین."
