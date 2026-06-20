@@ -3,6 +3,7 @@ import MetroDomain
 
 struct SettingsView: View {
     @Environment(AppSettings.self) private var settings
+    @State private var showOnboarding = false
 
     var body: some View {
         @Bindable var settings = settings
@@ -40,11 +41,24 @@ struct SettingsView: View {
                 }
 
                 Section(header: SectionHeaderLabel(Loc.about.string(for: lang))) {
+                    Button {
+                        Haptics.tap()
+                        showOnboarding = true
+                    } label: {
+                        Label(Loc.howToUse.string(for: lang), systemImage: "questionmark.circle")
+                    }
+                    .foregroundStyle(.primary)
                     Text(Loc.dataDisclaimer.string(for: lang))
                         .font(.app(.footnote)).foregroundStyle(.secondary)
                 }
+
+                // CheetahTeam credit + other apps — below everything.
+                CheetahPromoSection()
             }
             .navigationTitle(Loc.tabSettings.string(for: lang))
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingView { showOnboarding = false }
+            }
         }
     }
 

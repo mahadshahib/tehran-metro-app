@@ -18,6 +18,10 @@ final class AppSettings {
     var nameDisplay: NameDisplay {
         didSet { defaults.set(nameDisplay.rawValue, forKey: Keys.nameDisplay) }
     }
+    /// Whether the first-launch onboarding has been completed.
+    var hasCompletedOnboarding: Bool {
+        didSet { defaults.set(hasCompletedOnboarding, forKey: Keys.onboarding) }
+    }
 
     private let defaults: UserDefaults
 
@@ -25,6 +29,7 @@ final class AppSettings {
         static let language = "settings.language"
         static let theme = "settings.theme"
         static let nameDisplay = "settings.nameDisplay"
+        static let onboarding = "settings.hasCompletedOnboarding"
     }
 
     init(defaults: UserDefaults = .standard) {
@@ -38,6 +43,7 @@ final class AppSettings {
         }
         self.theme = defaults.string(forKey: Keys.theme).flatMap(Theme.init) ?? .system
         self.nameDisplay = defaults.string(forKey: Keys.nameDisplay).flatMap(NameDisplay.init) ?? .auto
+        self.hasCompletedOnboarding = defaults.bool(forKey: Keys.onboarding)
     }
 
     var colorScheme: ColorScheme? {
