@@ -1,0 +1,61 @@
+name: TehranMetro
+
+options:
+  bundleIdPrefix: com.tehranmetro
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  MetroDomain:
+    path: Packages/MetroDomain
+  MetroData:
+    path: Packages/MetroData
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_LANGUAGE: en
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+
+targets:
+  TehranMetro:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App/Sources
+      - path: App/Resources
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Tehran Metro
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSLocationWhenInUseUsageDescription: >-
+          Your location is used to find the nearest metro stations and give you
+          walking directions to a station entrance.
+        CFBundleLocalizations:
+          - en
+          - fa
+        UIAppFonts:
+          - Vazirmatn-Regular.ttf
+          - Vazirmatn-Medium.ttf
+          - Vazirmatn-Bold.ttf
+    dependencies:
+      - package: MetroDomain
+      - package: MetroData
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        PRODUCT_BUNDLE_IDENTIFIER: com.tehranmetro.app

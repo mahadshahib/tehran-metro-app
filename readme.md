@@ -1,5 +1,45 @@
 <img width="100px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Tehran_Metro_Logo.svg/200px-Tehran_Metro_Logo.svg.png"/>
 
+# Tehran Metro — Native iOS App
+
+A production-quality, **offline-first** native iOS app (Swift + SwiftUI, iOS 17+)
+for the Tehran Metro: browse lines and stations, plan journeys with step-by-step
+directions, view a custom schematic map, and find the nearest station. Fully
+bilingual (Farsi / English) with first-class RTL support.
+
+### Features
+- **Lines & stations** — official colors, ordered stations, interchange badges,
+  facilities, Persian-correct search.
+- **Schematic map** — custom Canvas-drawn, pan/zoom, tappable, line-colored.
+- **Journey planner** — line-aware Dijkstra; *fewest transfers* vs *fewest stops*;
+  "board Line X toward terminal Y, ride N stops, transfer at Z" directions with an
+  approximate time.
+- **Nearby (offline-first)** — live GPS tracking with the nearest station updating
+  as you move, plus an **Explore map** mode whose crosshair finds the nearest
+  station to any point with no GPS/connection at all. Walking-time estimates,
+  an online/offline indicator (only map *tiles* need a connection), and one-tap
+  external walking directions (Neshan → Apple → Google).
+- **Personalization** — favorites, saved routes, recents (SwiftData); language,
+  theme, and name-display settings; route sharing.
+
+### Build & run
+```bash
+brew install xcodegen          # one-time
+./scripts/fetch-fonts.sh       # optional: Vazirmatn Persian font
+xcodegen generate              # creates TehranMetro.xcodeproj
+open TehranMetro.xcodeproj      # build the "TehranMetro" scheme (iPhone, iOS 17+)
+```
+Run the engine/data tests without Xcode:
+```bash
+swift test --package-path Packages/MetroDomain
+swift test --package-path Packages/MetroData
+```
+
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the design and
+[`DATA_REPORT.md`](DATA_REPORT.md) for the data assessment.
+
+---
+
 # Tehran Metro Graph Data
 
 This repository contains data related to the Tehran Metro stations. The data is available in JSON format as a graph structure data, providing different options for utilizing the data.

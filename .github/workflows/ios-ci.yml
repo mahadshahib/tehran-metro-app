@@ -1,0 +1,64 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [claude/tehran-metro-ios-6ij4u7, main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ios-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Fast, framework-free validation of the domain + data Swift packages.
+  package-tests:
+    name: Swift Package Tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify bundled data matches source of truth
+        run: |
+          diff -q data/stations.json \
+            Packages/MetroData/Sources/MetroData/Resources/stations.json
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Test MetroDomain
+        run: swift test --package-path Packages/MetroDomain
+
+      - name: Test MetroData
+        run: swift test --package-path Packages/MetroData
+
+  # Build the SwiftUI iOS app for the simulator (no signing required).
+  ios-build:
+    name: Build iOS App
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build app (iOS Simulator)
+        run: |
+          xcodebuild \
+            -project TehranMetro.xcodeproj \
+            -scheme TehranMetro \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            build
