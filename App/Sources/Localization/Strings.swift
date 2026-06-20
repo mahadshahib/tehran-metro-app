@@ -135,6 +135,41 @@ enum Loc {
     static let nameEnglish = LocalizedText(en: "English", fa: "انگلیسی")
     static let nameFarsi = LocalizedText(en: "Persian", fa: "فارسی")
     static let about = LocalizedText(en: "About", fa: "درباره")
+    static let howToUse = LocalizedText(en: "How to use", fa: "راهنمای استفاده")
+
+    // CheetahTeam credit + promoted apps
+    static let moreFromCheetah = LocalizedText(en: "More from CheetahTeam", fa: "بیشتر از تیم چیتا")
+    static let madeByCheetah = LocalizedText(en: "Made with care by CheetahTeam", fa: "ساخته‌شده با علاقه توسط تیم چیتا")
+    static let getApp = LocalizedText(en: "Get", fa: "دریافت")
+    static let muviName = LocalizedText(en: "Muvi", fa: "مووی")
+    static let muviTagline = LocalizedText(en: "Movies & TV — streaming", fa: "پخش آنلاین فیلم و سریال")
+    static let cheetahName = LocalizedText(en: "Cheetah Download Manager", fa: "دانلود منیجر چیتا")
+    static let cheetahTagline = LocalizedText(en: "Background, multi-part downloads", fa: "دانلود چندبخشی در پس‌زمینه")
+
+    // Onboarding
+    static let onboardWelcomeTitle = LocalizedText(en: "Tehran Metro", fa: "مترو تهران")
+    static let onboardWelcomeBody = LocalizedText(
+        en: "Plan trips, browse every line, and find the nearest station — fully offline.",
+        fa: "سفرها را برنامه‌ریزی کنید، همه خطوط را ببینید و نزدیک‌ترین ایستگاه را بیابید — کاملاً آفلاین."
+    )
+    static let onboardPlanTitle = LocalizedText(en: "Plan in two taps", fa: "سفر با دو لمس")
+    static let onboardPlanBody = LocalizedText(
+        en: "Choose a destination and get clear step-by-step directions, including every transfer.",
+        fa: "مقصد را انتخاب کنید و مسیر گام‌به‌گام همراه با همه تعویض‌ها را ببینید."
+    )
+    static let onboardExploreTitle = LocalizedText(en: "Map & Nearby", fa: "نقشه و نزدیک من")
+    static let onboardExploreBody = LocalizedText(
+        en: "See the whole network on the schematic map and find stations around you in Nearby.",
+        fa: "کل شبکه را روی نقشه شماتیک ببینید و در «نزدیک من» ایستگاه‌های اطراف را پیدا کنید."
+    )
+    static let onboardOfflineTitle = LocalizedText(en: "Works offline", fa: "آفلاین کار می‌کند")
+    static let onboardOfflineBody = LocalizedText(
+        en: "Everything runs without a connection — perfect for underground. Switch language anytime in Settings.",
+        fa: "همه‌چیز بدون اینترنت کار می‌کند — مناسب زیر زمین. زبان را هر زمان در تنظیمات تغییر دهید."
+    )
+    static let skip = LocalizedText(en: "Skip", fa: "رد کردن")
+    static let next = LocalizedText(en: "Next", fa: "بعدی")
+    static let getStarted = LocalizedText(en: "Get started", fa: "شروع کنیم")
     static let dataSource = LocalizedText(en: "Data source", fa: "منبع داده")
     static let dataDisclaimer = LocalizedText(
         en: "Times are approximate. Metro data is community-maintained and may not reflect live service.",

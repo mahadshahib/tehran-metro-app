@@ -5,6 +5,17 @@ struct RootView: View {
     @Environment(AppSettings.self) private var settings
 
     var body: some View {
+        content
+            .fullScreenCover(isPresented: Binding(
+                get: { !settings.hasCompletedOnboarding },
+                set: { _ in }
+            )) {
+                OnboardingView { settings.hasCompletedOnboarding = true }
+            }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         if let error = model.loadError {
             ContentUnavailableView {
                 Label("Data failed to load", systemImage: "exclamationmark.triangle")
