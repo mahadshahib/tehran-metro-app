@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import MetroDomain
 
 /// A CheetahTeam app promoted in Settings. Tapping "Get" opens its deep link in
 /// the SibApp store.

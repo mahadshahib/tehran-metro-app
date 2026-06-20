@@ -1,4 +1,5 @@
 import SwiftUI
+import MetroDomain
 
 /// A small, elegant first-launch walkthrough so new users aren't confused.
 /// Presented full-screen; calls `onDone` when finished or skipped.
